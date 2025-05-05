@@ -13,9 +13,10 @@ FERIADOS_2025 = [
 ]
 
 # Estilos
-BG_COLOR = "#f0f8ff"
+BG_COLOR = "#E6F7FF"  # Celeste suave
 BTN_COLOR = "#2197e6"
 FONT = ("Segoe UI", 12)
+FONT_BOLD = ("Segoe UI", 12, "bold")
 
 MESES = [
     "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
@@ -51,10 +52,8 @@ def calcular():
                 dias_laborales = dias_laborales[:-6]  # 6 francos
             else:
                 dias_laborales = dias_laborales[:-8] # 8 francos 
-    
-        print(len(dias_laborales))
+
         dias_laborales_teoricos = len(dias_laborales) - ausencias
-        print(dias_laborales_teoricos)
         horas_diarias = jornada_semanal / 5  # Suponiendo 5 días por semana
         horas_teoricas = dias_laborales_teoricos * horas_diarias
         diferencia = horas_trabajadas - horas_teoricas
@@ -75,23 +74,21 @@ def calcular():
 
 # GUI
 root = tk.Tk()
-root.title("Calculadora de horas extra - Kazaro")
+root.title("Calculadora de horas extra - KAZARÓ")
 root.configure(bg=BG_COLOR)
 
-frame = tk.Frame(root, bg=BG_COLOR)
-frame.pack(side="left", padx=20, pady=20)
+frame = tk.Frame(root, bg=BG_COLOR, padx=20, pady=20)
+frame.pack(side="left", fill="y", expand=True)
 
 # Logo a la derecha
 try:
     logo_img = Image.open("KZRO.png")
-    logo_img = logo_img.resize((250, 250), Image.Resampling.LANCZOS)
+    logo_img = logo_img.resize((200, 200), Image.Resampling.LANCZOS)
     logo_tk = ImageTk.PhotoImage(logo_img)
     label_logo = tk.Label(root, image=logo_tk, bg=BG_COLOR)
     label_logo.pack(side="right", padx=20, pady=20)
 except:
-    pass  # si no hay logo, que no crashee
-
-
+    pass  # Si no hay logo, que no crashee
 
 # Función para actualizar la etiqueta de francos
 def actualizar_francos(*args):
@@ -112,37 +109,37 @@ def actualizar_francos(*args):
         label_francos.grid_remove()
 
 # Widgets
-tk.Label(frame, text="Horas trabajadas:", bg=BG_COLOR, font=FONT).grid(row=0, column=0, sticky="w")
-entry_horas = tk.Entry(frame)
+tk.Label(frame, text="Horas trabajadas:", bg=BG_COLOR, font=FONT_BOLD).grid(row=0, column=0, sticky="w", pady=10)
+entry_horas = tk.Entry(frame, font=FONT, bd=2, relief="groove", width=20)
 entry_horas.grid(row=0, column=1)
 
-tk.Label(frame, text="Servicio:", bg=BG_COLOR, font=FONT).grid(row=1, column=0, sticky="w")
-combo_servicio = ttk.Combobox(frame, values=["Supermercado", "Colegio", "Cuadrilla"], state="readonly")
+tk.Label(frame, text="Servicio:", bg=BG_COLOR, font=FONT_BOLD).grid(row=1, column=0, sticky="w", pady=10)
+combo_servicio = ttk.Combobox(frame, values=["Supermercado", "Colegio", "Cuadrilla"], state="readonly", font=FONT)
 combo_servicio.current(0)
 combo_servicio.grid(row=1, column=1)
 combo_servicio.bind("<<ComboboxSelected>>", actualizar_francos)
 
-tk.Label(frame, text="Jornada semanal (hs):", bg=BG_COLOR, font=FONT).grid(row=2, column=0, sticky="w")
-combo_jornada = ttk.Combobox(frame, values=[20, 30, 40, 42, 44], state="readonly")
+tk.Label(frame, text="Jornada semanal (hs):", bg=BG_COLOR, font=FONT_BOLD).grid(row=2, column=0, sticky="w", pady=10)
+combo_jornada = ttk.Combobox(frame, values=[20, 30, 40, 42, 44], state="readonly", font=FONT)
 combo_jornada.current(1)
 combo_jornada.grid(row=2, column=1)
 combo_jornada.bind("<<ComboboxSelected>>", actualizar_francos)
 
-tk.Label(frame, text="Ausencias (días):", bg=BG_COLOR, font=FONT).grid(row=3, column=0, sticky="w")
-entry_ausencias = tk.Entry(frame)
+tk.Label(frame, text="Ausencias (días):", bg=BG_COLOR, font=FONT_BOLD).grid(row=3, column=0, sticky="w", pady=10)
+entry_ausencias = tk.Entry(frame, font=FONT, bd=2, relief="groove", width=20)
 entry_ausencias.insert(0, "0")
 entry_ausencias.grid(row=3, column=1)
-tk.Label(frame, text="Mes:", bg=BG_COLOR, font=FONT).grid(row=4, column=0, sticky="w")
-combo_mes = ttk.Combobox(frame, values=MESES, state="readonly")
+
+tk.Label(frame, text="Mes:", bg=BG_COLOR, font=FONT_BOLD).grid(row=4, column=0, sticky="w", pady=10)
+combo_mes = ttk.Combobox(frame, values=MESES, state="readonly", font=FONT)
 combo_mes.current(0)
 combo_mes.grid(row=4, column=1)
 
 label_francos = tk.Label(frame, bg=BG_COLOR, font=FONT)
-label_francos.grid(row=4, column=0, columnspan=2, sticky="w", pady=(5, 0))
+label_francos.grid(row=5, column=0, columnspan=2, sticky="w", pady=(5, 0))
 label_francos.grid_remove()
 
-
-btn_calcular = tk.Button(frame, text="Calcular", command=calcular, bg=BTN_COLOR, fg="white", font=FONT)
-btn_calcular.grid(row=5, column=0, columnspan=2, pady=10)
+btn_calcular = tk.Button(frame, text="Calcular", command=calcular, bg=BTN_COLOR, fg="white", font=FONT, relief="flat", width=20)
+btn_calcular.grid(row=6, column=0, columnspan=2, pady=15)
 
 root.mainloop()
